@@ -1,0 +1,23 @@
+/*number inputs*/
+input[type="number"] {
+width:100px; height:30px; 
+text-align:right; 
+margin:3px; 
+float:left;}
+
+/*select and equals elements*/
+select, .equals {
+margin:3px; 
+float:left;}
+
+/*output element*/
+output {
+display:inline-block; 
+border:1px solid #333333; 
+border-radius:5px; 
+min-width:25px; height:auto; 
+margin:3px; padding:2px;
+text-align:center; 
+background:blue; 
+color: white; 
+float:left; }

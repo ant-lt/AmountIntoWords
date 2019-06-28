@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta charset="utf-8">
+	<title>Keitimas skaičių žodžiais | Convert numbers into words in Lithuanian| Demo</title>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<script type="text/javascript" src="scripts/script.js"></script>
+
+</header>
+<body>
+
+<p>This is a demo to convert the number to Lithuanian words</p>
+
+<div>
+<form id="inform" oninput="updateOutput()">
+
+<input name="amount" type="number" value="0" />
+<select name="currency" onchange="updateOutput()">
+  <option value="0">Eurai</option>
+  <option value="1">Litai</option>
+</select> 
+
+<div class="equals">in words</div>
+<div>
+	<output name="amountinword">Nulis</output>
+</div>
+</form> 
+</div>
+
+</body>
+</html>
