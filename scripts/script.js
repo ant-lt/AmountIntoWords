@@ -214,10 +214,10 @@ function NumberToWordLT(NumberText, currency ) {
 	var bigNumber = new Array(5);
 
 	bigNumber[0] = "";
-	bigNumber[1] = " tūkstan";
-	bigNumber[2] = " milijon";
-	bigNumber[3] = " billion";
-	bigNumber[4] = " trillion";
+	bigNumber[1] = "tūkstan";
+	bigNumber[2] = "milijon";
+	bigNumber[3] = "billion";
+	bigNumber[4] = "trillion";
 
 	if ( NumberText < 0) {
 		Minus = "Minus ";
