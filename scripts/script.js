@@ -200,7 +200,7 @@ function NumberToWordLT(NumberText, currency ) {
 	var AmountInWord = "",
 	Cents_str = "",
 	Temp, Cents=0;
-	var int_digit = parseInt(NumberText);
+	var int_digit = 0;
 	var last_digitStr = "";
 	var last_digitint =0;
 	var digit2Str = "";
@@ -224,6 +224,7 @@ function NumberToWordLT(NumberText, currency ) {
 		NumberText = NumberText*-1;
 	}
 
+	int_digit = parseInt(NumberText);
 
 	NumberText = Math.round(NumberText * 100) / 100;
 
@@ -323,11 +324,12 @@ function NumberToWordLT(NumberText, currency ) {
 	while (NumberText != "");
 
 	AmountInWord = AmountInWord.trim();
+	AmountInWord = Minus + AmountInWord;
 	if (int_digit == 0) AmountInWord = "nulis";
 	if (Cents_str[0]=='0') Cents_str = Cents_str.substr(1, 1);
 	if (Cents_str =='') Cents_str="0";    
 	Cents=parseInt(Cents_str.toString());
-	Cents_str = " " + Cents + " ct.";
+	Cents_str = " " + Cents + " ct";
 
 	//change first letter to uppercase.
 	var fs_letter = AmountInWord.charAt(0);
@@ -335,6 +337,6 @@ function NumberToWordLT(NumberText, currency ) {
 	AmountInWord = up_letter + AmountInWord.substr(1, AmountInWord.length -1).trim();
 
 
-	return Minus+AmountInWord + " " + currency_text + Cents_str;
+	return AmountInWord + " " + currency_text + Cents_str;
 
 }
