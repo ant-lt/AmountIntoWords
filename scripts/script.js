@@ -128,32 +128,33 @@ function GetTensLT(NumberText) {
 	} else {
 		switch (digit1) {
 			case 2:
-			Result = "dvidešimt ";
+			Result = "dvidešimt";
 			break;
 			case 3:
-			Result = "trisdešimt ";
+			Result = "trisdešimt";
 			break;
 			case 4:
-			Result = "keturiasdešimt ";
+			Result = "keturiasdešimt";
 			break;
 			case 5:
-			Result = "penkiasdešimt ";
+			Result = "penkiasdešimt";
 			break;
 			case 6:
-			Result = "šešiasdešimt ";
+			Result = "šešiasdešimt";
 			break;
 			case 7:
-			Result = "septyniasdešimt ";
+			Result = "septyniasdešimt";
 			break;
 			case 8:
-			Result = "aštuoniasdešimt ";
+			Result = "aštuoniasdešimt";
 			break;
 			case 9:
-			Result = "devyniasdešimt ";
+			Result = "devyniasdešimt";
 			break;
 		}
 
-		Result = Result + GetNumberLT(digit0);
+		Result = Result + " " + GetNumberLT(digit0);
+		Result = Result.trim();
 	}
 
 	return Result;
@@ -176,18 +177,18 @@ function GetHundredsLT(NumberText) {
     if (MidStr(strNumberText, 0, 1) != "0") {
     	first_digit = MidStr(strNumberText, 0, 1);
     	if (first_digit == '1' ) {
-    		hundred_end=" šimtas ";
+    		hundred_end=" šimtas";
     	}else {
-    		hundred_end=" šimtai ";
+    		hundred_end=" šimtai";
     	}
     	Result = GetNumberLT(MidStr(strNumberText, 0, 1)) + hundred_end;
     }
 
     // Convert the tens and ones number.
     if (MidStr(strNumberText, 1, 1) != "0") {
-    	Result = Result + GetTensLT(MidStr2(strNumberText, 1));
+    	Result = Result + " " + GetTensLT(MidStr2(strNumberText, 1));
     } else {
-    	Result = Result + GetNumberLT(MidStr2(strNumberText, 2));
+    	Result = Result + " " + GetNumberLT(MidStr2(strNumberText, 2));
     }
 
     return Result;
@@ -200,21 +201,23 @@ function NumberToWordLT(NumberText, currency ) {
 	Cents_str = "",
 	Temp, Cents=0;
 	var int_digit = parseInt(NumberText);
-	var int_digit2_str ="",
-	last_digit = "";
-
+	var last_digitStr = "";
+	var last_digitint =0;
+	var digit2Str = "";
+	var digit2int = 0;	
 	var DecimalBigNumber = "",
 	Count;
 	var Minus = "";
 	var currency_text="";
+	var dg_end = "";
 
-	var BigNumber = new Array(5);
+	var bigNumber = new Array(5);
 
-	BigNumber[0] = "";
-	BigNumber[1] = " tūkstan";
-	BigNumber[2] = " milijon";
-	BigNumber[3] = " billion";
-	BigNumber[4] = " trillion";
+	bigNumber[0] = "";
+	bigNumber[1] = " tūkstan";
+	bigNumber[2] = " milijon";
+	bigNumber[3] = " billion";
+	bigNumber[4] = " trillion";
 
 	if ( NumberText < 0) {
 		Minus = "Minus ";
@@ -232,64 +235,82 @@ function NumberToWordLT(NumberText, currency ) {
 	}
 
 
-	last_digit = Right(int_digit.toString(),1);
+	last_digitStr = Right(int_digit.toString(),1);
+	last_digitint = parseInt(last_digitStr);
 
-	switch ( last_digit ) {
-		case '0':
-		currency_text = currency+"ų";
-		break;
-		case '1':
-		currency_text = currency+"as";
-		break;
-		default:
-		currency_text = currency+"ai";
-		break;
+	digit2Str = Right(NumberText, 2);
+	digit2int = parseInt(digit2Str);
+
+	if ((digit2int > 10) && (digit2int < 20))
+	{
+		currency_text = currency + "ų ";
+	}
+	else
+	{
+		if (last_digitint == 0)
+		{
+			currency_text = currency + "ų ";
+		}
+		else if (last_digitint == 1)
+		{
+			currency_text = currency + "as ";
+		}
+		else
+		{
+			currency_text = currency + "ai ";
+		}
 	}
 
-	int_digit2_str=Right(int_digit.toString(),2);
-	int_digit=parseInt(int_digit2_str);
-	if (int_digit >10 & int_digit<20) currency_text = currency+"ų";
+
 
 	Count = 0;
 
 	do {
 		Temp = GetHundredsLT(Right(NumberText, 3));
-		
+
 		if (Temp != "" && Temp !="Nulis") {
 			dg_end ="";
-			last_digit = Right( NumberText.toString(), 1);
+			last_digitStr = Right( NumberText.toString(), 1);
+			last_digitint = parseInt(last_digitStr);
 
-			if (Count == 1 ) {
-				switch ( last_digit ) {
-					case '0':
-					dg_end =  BigNumber[Count]+"čių";
-					break;
-					case '1':
-					dg_end =  BigNumber[Count]+"tis";
-					break;
-					default:
-					dg_end =  BigNumber[Count]+"čiai";
-					break;
+			digit2Str = Right(NumberText, 2);
+			digit2int = parseInt(digit2Str);
+
+			if (Count == 1){
+				if ((digit2int > 10) && (digit2int < 20) ) {
+					dg_end = bigNumber[Count] + "čių";
+				} else {
+					if (last_digitint == 0 ) {
+						dg_end = bigNumber[Count] + "čių";
+					}
+					else if( last_digitint == 1) {
+						dg_end = bigNumber[Count] + "tis";
+					} else{
+						dg_end = bigNumber[Count] + "čiai";
+					}
 				}
-			}else if (Count > 1 ) {
-				switch ( last_digit ) {
-					case '0':
-					dg_end =  BigNumber[Count]+"ų";
-					break;
-					case '1':
-					dg_end =  BigNumber[Count]+"as";
-					break;
-					default:
-					dg_end =  BigNumber[Count]+"ai";
-					break;
+
+			}
+			else if (Count > 1)
+			{
+				if ((digit2int > 10) && (digit2int < 20)) {
+					dg_end = bigNumber[Count] + "ų";
+				}
+				else {
+					if (last_digitint == 0) {
+						dg_end = bigNumber[Count] + "ų";
+					}
+					else if (last_digitint == 1) {
+						dg_end = bigNumber[Count] + "as";
+					}
+					else {
+						dg_end = bigNumber[Count] + "ai";
+					}
 				}
 			}
-
-
-
-			AmountInWord = Temp +" "+ dg_end + " " + AmountInWord;
+			AmountInWord = Temp +" "+ dg_end + " " + AmountInWord.trim();
 		}
-		
+
 		if (NumberText.toString().length > 3) {
 			NumberText = Left(NumberText, NumberText.toString().length - 3);
 		} else {
@@ -301,6 +322,8 @@ function NumberToWordLT(NumberText, currency ) {
 
 	while (NumberText != "");
 
+	AmountInWord = AmountInWord.trim();
+	if (int_digit == 0) AmountInWord = "nulis";
 	if (Cents_str[0]=='0') Cents_str = Cents_str.substr(1, 1);
 	if (Cents_str =='') Cents_str="0";    
 	Cents=parseInt(Cents_str.toString());
@@ -309,10 +332,9 @@ function NumberToWordLT(NumberText, currency ) {
 	//change first letter to uppercase.
 	var fs_letter = AmountInWord.charAt(0);
 	var up_letter = fs_letter.toUpperCase();
-	AmountInWord = up_letter + AmountInWord.substr(1, AmountInWord.length -1);
+	AmountInWord = up_letter + AmountInWord.substr(1, AmountInWord.length -1).trim();
 
 
 	return Minus+AmountInWord + " " + currency_text + Cents_str;
 
 }
-
